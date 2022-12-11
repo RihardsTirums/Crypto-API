@@ -1,0 +1,95 @@
+{% extends "layout.twig" %}
+
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+    <div class="container pt-3 bg-warning " style="height: 955px; width: 1000px">
+        <div class="text-center">
+            <h2>Balance: ${{ auth.money|number_format(2) }}</h2>
+            <div class="d-flex justify-content-center">
+                <div class="me-2">
+                    <form action="/dashboard/deposit" method="post">
+                        <div class="text-center">
+                            <label for="deposit" class="col-form-label text-secondary fs-5 text-uppercase">Amount</label>
+                            <input type="number" id="deposit" name="amount" class="form-control rounded-0" aria-describedby="buy">
+                        </div>
+                        <div class="d-grid mt-2">
+                            <button class="btn btn-outline-success rounded-0" type="submit">Deposit</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="me-2">
+                    <form action="/dashboard/withdraw" method="post">
+                        <div class="text-center">
+                            <label for="withdraw" class="col-form-label text-secondary fs-5 text-uppercase">Amount</label>
+                            <input type="number" id="withdraw" name="amount" class="form-control rounded-0" aria-describedby="buy">
+                        </div>
+                        <div class="d-grid mt-2">
+                            <button class="btn btn-outline-primary rounded-0" type="submit">Withdraw</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="mt-3">
+            <h1 class="text-secondary">Portfolio:</h1>
+            <table class="table mt-3">
+                <thead>
+                <tr class="text-secondary text-uppercase">
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Amount</th>
+                    <th scope="col">Current value</th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for key, entry in portfolio %}
+                    <tr>
+                        <th class="text-secondary pt-3" scope="row">{{ key+1 }}</th>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <img src="{{ entry.coinLogo }}" alt="logo {{ entry.id }}" class="rounded-circle me-3" width="40px">
+                                <small class="m-0">{{ entry.coinName }} <span class="badge bg-secondary">{{ entry.symbol }}</span></small>
+                            </div>
+                        </td>
+                        <td class="align-middle small"><span>{{ entry.amount|number_format(2) }}</span></td>
+                        <td class="align-middle small"><span>need to implement</span></td>
+                        <td class="align-middle small"><a class="btn btn-outline-primary rounded-0" href="/coin/{{ entry.coinId }}">Trade</a></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="mt-5">
+            <h1 class="text-secondary">Transactions:</h1>
+            <table class="table mt-3">
+                <thead>
+                <tr class="text-secondary text-uppercase">
+                    <th scope="col">#</th>
+                    <th scope="col">Id</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Price per coin</th>
+                    <th scope="col">Amount</th>
+                    <th scope="col">Total</th>
+                    <th scope="col">Date</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for key, transaction in transactions %}
+                    <tr style="background-color: {{ transaction.type == 'buy' ? '#90EE90' : '#ffcccb' }}">
+                        <th scope="row">{{ key+1 }}</th>
+                        <td>{{ transaction.id }}</td>
+                        <td>{{ transaction.type }}</td>
+                        <td>{{ transaction.coinName }}</td>
+                        <td>${{ transaction.coinPrice|number_format(2) }}</td>
+                        <td class="align-middle"><span>{{ transaction.amount|number_format(2) }}</span></td>
+                        <td class="align-middle"><span>${{ (transaction.coinPrice * transaction.amount)|number_format(2) }}</span></td>
+                        <td class="align-middle"><span>{{ transaction.createdAt }}</span></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

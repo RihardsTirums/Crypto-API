@@ -1,0 +1,74 @@
+{% extends "layout.twig" %}
+
+{% block title %}Register{% endblock %}
+{% block content %}
+    <section class="vh-100"
+         style="background-image: linear-gradient(to right top, #051937, #004d7a, #008793, #00bf72, #a8eb12);">
+        <div class="mask d-flex align-items-center h-100 gradient-custom-3">
+            <div class="container h-100">
+                <div class="row d-flex justify-content-center align-items-center h-100">
+                    <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+                        <div class="card" style="border-radius: 15px;">
+                            <div class="card-body p-5">
+                                <p class="text-center h1 mb-5 mx-1 mx-md-4 mt-4">Sign up</p>
+                                <form action="/register" method="post" class="">
+                                    <div class="form-outline mb-3">
+                                            <label class="form-label text-secondary" for="form3Example1c">Your Name</label>
+                                            <input type="text" id="form3Example1c" placeholder="Enter name"
+                                                   class="form-control rounded-3 border border-primary py-2 {{ errors.name ? 'is-invalid' }}" name="name"/>
+                                            {% if errors.name %}
+                                                <div class="invalid-feedback">
+                                                    {{ errors.name }}
+                                                </div>
+                                            {% endif %}
+                                        </div>
+
+                                    <div class="form-outline mb-3">
+                                            <label class="form-label text-secondary" for="form3Example3c">Your Email</label>
+                                            <input type="email" id="form3Example3c" placeholder="Enter email"
+                                                   class="form-control rounded-3 py-2 border border-success {{ errors.email ? 'is-invalid' }}" name="email"/>
+                                            {% if errors.email %}
+                                                <div class="invalid-feedback">
+                                                    {{ errors.email }}
+                                                </div>
+                                            {% endif %}
+                                    </div>
+
+                                    <div class="form-outline mb-3">
+                                            <label class="form-label text-secondary" for="form3Example4c">Password</label>
+                                            <input type="password" id="form3Example4c" placeholder="Enter password"
+                                                   class="form-control rounded-3 py-2 border border-success {{ errors.password ? 'is-invalid' }}"
+                                                   name="password"/>
+                                            {% if errors.password %}
+                                                <div class="invalid-feedback">
+                                                    {{ errors.password }}
+                                                </div>
+                                            {% endif %}
+                                    </div>
+
+                                    <div class="form-outline mb-4">
+                                            <label class="form-label text-secondary" for="form3Example4cd">Repeat your password</label>
+                                            <input type="password" id="form3Example4cd" placeholder="Repeat password"
+                                                   class="form-control rounded-3 py-2  border border-success {{ errors.passwordConfirm ? 'is-invalid' }}"
+                                                   name="passwordConfirm"/>
+                                            {% if errors.passwordConfirm %}
+                                                <div class="invalid-feedback">
+                                                    {{ errors.passwordConfirm }}
+                                                </div>
+                                            {% endif %}
+                                    </div>
+
+                                    <div class="d-flex justify-content-center">
+                                        <button type="submit" class="btn btn-primary btn-block btn-lg gradient-custom-4 w-75 text-white">Sign up</button>
+                                    </div>
+
+                                </form>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

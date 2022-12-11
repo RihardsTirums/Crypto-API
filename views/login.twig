@@ -1,0 +1,67 @@
+{% extends "layout.twig" %}
+
+{% block title %}Login{% endblock %}
+{% block content %}
+    <section>
+    <div class="container-fluid h-custom">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-md-9 col-lg-6 col-xl-5">
+                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/img4.webp"
+                     alt="Sample photo" class="img-fluid"
+                     style="height: 950px; opacity: 0.2;" />
+            </div>
+            <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1 m-0 my-auto card p-5 rounded-0" style="border-color: darkgreen;background-color: plum" >
+                <h1 class="pb-3 text-center">Log in</h1>
+                <form action="/login" method="post">
+                    <div class="form-outline mb-3">
+                        <label class="form-label text-secondary" for="form3Example3">Email address</label>
+                        <input type="email" id="form3Example3" class="form-control rounded-0 py-2  {{ errors.email ? 'is-invalid' }}"
+                               placeholder="Enter a valid email address" name="email"/>
+                        {% if errors.email %}
+                            <div class="invalid-feedback">
+                                {{ errors.email }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-outline mb-3">
+                        <label class="form-label text-secondary" for="form3Example4">Password</label>
+                        <input type="password" id="form3Example4"
+                               class="form-control rounded-0 py-2 {{ errors.password ? 'is-invalid' }}"
+                               placeholder="Enter password" name="password"/>
+                        {% if errors.password %}
+                            <div class="invalid-feedback">
+                                {{ errors.password }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center">
+
+                        <div class="form-check mb-0">
+                            <input class="form-check-input me-2" type="checkbox" value="" id="form2Example3"/>
+                            <label class="form-check-label text-secondary" for="form2Example3">
+                                Remember me
+                            </label>
+                        </div>
+                        <a href="#!" class=" text-secondary">Forgot password?</a>
+
+                    </div>
+                    <p class="small fw-bold mt-2 pt-1 mb-0 text-secondary">Don't have an account? <a href="/register"
+                                                                                                     class="link-danger">Register</a>
+                    </p>
+
+                    <div class="text-center mt-4">
+                        <button type="submit" class="btn btn-primary btn-block gradient-custom-4 btn-lg text-white rounded-0"
+                                style="padding-left: 2.5rem; padding-right: 2.5rem;">Login
+                        </button>
+
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+    </section>
+{% endblock %}
