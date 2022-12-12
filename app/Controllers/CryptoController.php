@@ -12,7 +12,7 @@ class CryptoController
 {
     public function index(): Template
     {
-        $limit = 10;
+        $limit = 20;
         $coins = (new IndexCoinService())->execute($limit);
         return new Template('index.twig', ['coins' => $coins->getCoins()]);
     }
