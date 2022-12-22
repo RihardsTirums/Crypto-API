@@ -1,0 +1,65 @@
+{% extends "layout.twig" %}
+
+{% block title %}Transfer{% endblock %}
+{% block content %}
+    <div class="container" style="background-image: linear-gradient(to bottom right, #051937, #00bf72);height: 904px;">
+        <div class=" border-0 mb-3 mx-auto w-50 p-5" style="background-image: linear-gradient(to bottom right, red, yellow);height: 436px;">
+            <div class="card-header d-flex py-2 align-items-center justify-content-center" style="background-color: #051937;">
+                <img src="{{ coin.coinLogo }}" alt="logo {{ coin.id }}" class="rounded-circle shadow border-gray border border-1 me-3" width="60px">
+                <div class="text-end d-flex">
+                    <span class="badge bg-secondary fs-5">{{ coin.symbol }}</span>
+                    <h3 class="m-0 text-white my-auto">{{ coin.coinName }}</h3>
+                    <p class="fw-bold fs-6 my-auto text-danger text-uppercase ps-5 py-2 m-0">You have: {{ coin.amount|number_format(4) }}</p>
+                </div>
+            </div>
+            <div class="d-flex">
+                <div class="bg-success py-4 border-0 px-5">
+                    <form action="/coin/{{ coin.coinId }}/transfer" method="post"
+                          class="d-flex align-items-start justify-content-between flex-wrap">
+                        <div class="d-flex ">
+                            <p class="fw-bold fs-5 text-white me-2">From: </p>
+                            <p class="fs-4 text-uppercase">{{ auth.name }}</p>
+                        </div>
+                        <div class="d-flex">
+                            <p class="fw-bold fs-5 text-white me-2">To: </p>
+                            <select name="recipient_id" class="form-select {{ errors.recipient ? 'is-invalid' }}"
+                                    aria-label="Default select example">
+                                <option selected hidden="hidden">Select</option>
+                                {% for user in users %}
+                                    <option value={{ user.id }}>{{ user.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="me-2  ">
+                            <div>
+                                <label for="amount" class="col-form-label">Amount</label>
+                                <input type="number" step="any" name="amount" id="amount"
+                                       class="form-control rounded-0 {{ errors.amount ? 'is-invalid' }}" aria-describedby="amount">
+                                {% if errors.amount %}
+                                    <div class="text-danger">
+                                        {{ errors.amount }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="d-flex flex-inline">
+                                <div>
+                                    <label for="password" class="col-form-label">Password</label>
+                                    <input type="password" name="password" id="password"
+                                           class="form-control rounded-0 {{ errors.password ? 'is-invalid' }}" aria-describedby="buy">
+                                    {% if errors.password %}
+                                        <div class="text-danger">
+                                            {{ errors.password }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div class="mt-4 ms-2">
+                                    <button class="btn fw-bold ms-5 p-3 bg-warning text-uppercase text-white" style="border-radius: 50%" type="submit">Ok</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

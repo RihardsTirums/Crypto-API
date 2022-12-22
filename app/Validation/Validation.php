@@ -2,12 +2,20 @@
 
 namespace App\Validation;
 
+use App\FormRequests\BuyAndSellCryptoFormRequest;
+use App\FormRequests\ShortSellCryptoFormRequest;
+use App\FormRequests\TransferCryptoFormRequest;
 use App\FormRequests\UserLoginFormRequest;
 use App\FormRequests\UserRegistrationFormRequest;
 use App\Models\User;
 
 class Validation extends Rules
 {
+    public function hasErrors(): bool
+    {
+        return isset($_SESSION['errors']) && count($_SESSION['errors']) > 0;
+    }
+
     public function validateRegistrationForm(UserRegistrationFormRequest $request): void
     {
         $this->validateUserName($request->getName());
@@ -24,5 +32,38 @@ class Validation extends Rules
         $user = $this->validateLoginCredentials($request->getEmail(), $request->getPassword());
 
         return $user ?: null;
+    }
+
+    public function validateMoneyWithdrawalForm(float $amount, int $userId): void
+    {
+        $this->validateMoneyWithdrawal($amount, $userId);
+    }
+
+    public function validateBuyCryptoForm(BuyAndSellCryptoFormRequest $request): void
+    {
+        $this->validateBuyCrypto($request);
+    }
+
+    public function validateSellCryptoForm(BuyAndSellCryptoFormRequest $request): void
+    {
+        $this->validateSellCrypto($request);
+    }
+
+    public function validateTransferCryptoForm(TransferCryptoFormRequest $request): void
+    {
+        $this->validateValueGreaterThanZero($request->getAmount());
+        $this->validateTransferCrypto($request);
+        $this->validateCorrectPassword($request->getPassword(), $request->getUserId());
+    }
+
+    //TODO: ADDED OPEN AND CLOSE SHORT SELL VALIDATION
+    public function validateOpenShortSellCryptoForm(ShortSellCryptoFormRequest $request): void
+    {
+        $this->validateOpenShortCryptoForm($request);
+    }
+
+    public function validateCloseShortSellCryptoForm(ShortSellCryptoFormRequest $request): void
+    {
+        $this->validateCloseShortCryptoForm($request);
     }
 }

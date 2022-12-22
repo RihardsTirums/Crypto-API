@@ -2,10 +2,14 @@
 
 session_start();
 
+use App\Controllers\BuySellCryptoController;
 use App\Controllers\CryptoController;
 use App\Controllers\LoginController;
 use App\Controllers\LogoutController;
+use App\Controllers\MoneyController;
 use App\Controllers\RegisterController;
+use App\Controllers\ShortSellCryptoController;
+use App\Controllers\TransferCryptoController;
 use App\Controllers\UserDashboardController;
 use App\Redirect;
 use App\Template;
@@ -23,6 +27,24 @@ $dotenv->load();
 
 $loader = new FilesystemLoader('views');
 $twig = new Environment($loader);
+//TODO: cleanup container
+$container = new DI\Container();
+$container->set(
+    \App\Repositories\Crypto\CryptoRepository::class,
+    \DI\create(\App\Repositories\Crypto\CoinMarketCapApiCryptoRepository::class)
+);
+$container->set(
+    \App\Repositories\Users\UserRepository::class,
+    \DI\create(\App\Repositories\Users\MySQLUserRepository::class)
+);
+$container->set(
+    \App\Repositories\UserCrypto\UserCryptoRepository::class,
+    \DI\create(\App\Repositories\UserCrypto\MySQLUserCryptoRepository::class)
+);
+$container->set(
+    \App\Repositories\Transactions\TransactionsRepository::class,
+    \DI\create(\App\Repositories\Transactions\MySQLTransactionsRepository::class)
+);
 
 //TODO: Can implement auto read from directory
 $viewVariables = [
@@ -39,6 +61,10 @@ foreach ($viewVariables as $variable) {
 $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $route) {
     $route->addRoute('GET', '/', [CryptoController::class, 'index']);
     $route->addRoute('GET', '/coin/{id:\d+}', [CryptoController::class, 'show']);
+    $route->addRoute('POST', '/coin/{id:\d+}/buy', [BuySellCryptoController::class, 'buyCrypto']);
+    $route->addRoute('POST', '/coin/{id:\d+}/sell', [BuySellCryptoController::class, 'sellCrypto']);
+    $route->addRoute('GET', '/coin/{id:\d+}/transfer', [TransferCryptoController::class, 'show']);
+    $route->addRoute('POST', '/coin/{id:\d+}/transfer', [TransferCryptoController::class, 'transfer']);
     $route->addRoute('GET', '/search', [CryptoController::class, 'search']);
     $route->addRoute('GET', '/register', [RegisterController::class, 'showForm']);
     $route->addRoute('POST', '/register', [RegisterController::class, 'store']);
@@ -46,10 +72,11 @@ $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $rou
     $route->addRoute('POST', '/login', [LoginController::class, 'login']);
     $route->addRoute('GET', '/logout', [LogoutController::class, 'logout']);
     $route->addRoute('GET', '/dashboard', [UserDashboardController::class, 'index']);
-    $route->addRoute('POST', '/dashboard/deposit', [UserDashboardController::class, 'depositMoney']);
-    $route->addRoute('POST', '/dashboard/withdraw', [UserDashboardController::class, 'withdrawMoney']);
-    $route->addRoute('POST', '/coin/buy', [UserDashboardController::class, 'buyCrypto']);
-    $route->addRoute('POST', '/coin/sell', [UserDashboardController::class, 'sellCrypto']);
+    $route->addRoute('POST', '/deposit', [MoneyController::class, 'deposit']);
+    $route->addRoute('POST', '/withdraw', [MoneyController::class, 'withdraw']);
+    // ADDED OPEN & CLOSE SHORT ROUTES
+    $route->addRoute('POST', '/coin/{id:\d+}/openShort', [ShortSellCryptoController::class, 'openShort']);
+    $route->addRoute('POST', '/coin/{id:\d+}/closeShort', [ShortSellCryptoController::class, 'closeShort']);
 });
 
 // Fetch method and URI from somewhere
@@ -77,7 +104,7 @@ switch ($routeInfo[0]) {
 
         [$controller, $method] = $handler;
 
-        $response = (new $controller)->{$method}($vars);
+        $response = $container->get($controller)->{$method}($vars);
 
         if ($response instanceof Template) {
             echo $twig->render($response->getPath(), $response->getParams());

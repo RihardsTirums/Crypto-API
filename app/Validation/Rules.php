@@ -2,14 +2,42 @@
 
 namespace App\Validation;
 
-use App\Authentication;
 use App\Database;
+use App\FormRequests\BuyAndSellCryptoFormRequest;
+use App\FormRequests\ShortSellCryptoFormRequest;
+use App\FormRequests\TransferCryptoFormRequest;
 use App\Models\User;
+use App\Repositories\Crypto\CryptoRepository;
+use App\Repositories\UserCrypto\UserCryptoRepository;
+use App\Repositories\Users\UserRepository;
 use Respect\Validation\Exceptions\ValidationException;
 use Respect\Validation\Validator as validator;
 
 class Rules
 {
+    private UserRepository $userRepository;
+    private CryptoRepository $cryptoRepository;
+    private UserCryptoRepository $userCryptoRepository;
+
+    public function __construct(UserRepository       $userRepository,
+                                CryptoRepository     $cryptoRepository,
+                                UserCryptoRepository $userCryptoRepository)
+    {
+        $this->userRepository = $userRepository;
+        $this->cryptoRepository = $cryptoRepository;
+        $this->userCryptoRepository = $userCryptoRepository;
+    }
+
+    protected function validateValueGreaterThanZero(float $value, string $errorName = 'amount'): void
+    {
+        $valueValidator = validator::floatVal()->positive();
+        try {
+            $valueValidator->check($value);
+        } catch (ValidationException $exception) {
+            $this->addError($errorName, 'Amount must be greater than zero.');
+        }
+    }
+
     protected function validateUserName(string $name): void
     {
         $userNameValidator = validator::alpha()->length(3, 15);
@@ -32,16 +60,10 @@ class Rules
 
     protected function validateEmailExists(string $email): void
     {
-        $queryBuilder = Database::getConnection()->createQueryBuilder();
-        $checkIfEmailExists = $queryBuilder
-            ->select('email')
-            ->from('users')
-            ->where('email = ?')
-            ->setParameter(0, $email)
-            ->fetchAssociative();
+        $user = $this->userRepository->getByEmail($email);
 
-        if ($checkIfEmailExists) {
-            $this->addError('email', 'this email is already taken!');
+        if ($user) {
+            $this->addError('email', 'Email is already taken!');
         }
     }
 
@@ -65,38 +87,91 @@ class Rules
         }
     }
 
-    protected function validateCurrentPassword(string $password): void
+    protected function validateLoginCredentials(string $email, string $password): ?User
     {
-        if (!password_verify($password, Authentication::getUser()->getPassword())) {
-            $this->addError('password', 'wrong password!');
+        $user = $this->userRepository->getByEmail($email);
+        if ($user) {
+            if (password_verify($password, $user->getPassword())) {
+                return $user;
+            }
+        }
+
+        $this->addError('email', 'Wrong email or password');
+        return null;
+    }
+
+    protected function validateCorrectPassword(string $password, int $userId): void
+    {
+        $user = $this->userRepository->getById($userId);
+        if ($user) {
+            if (!password_verify($password, $user->getPassword())) {
+                $this->addError('password', 'Wrong password');
+            }
+            return;
+        }
+        $this->addError('password', 'Something went wrong!');
+    }
+
+    protected function validateMoneyWithdrawal(float $amount, int $userId): void
+    {
+        $user = $this->userRepository->getById($userId);
+        if ($amount > $user->getBalance()) {
+            $this->addError('amount', 'You do not have enough money!');
         }
     }
 
-    protected function validateLoginCredentials(string $email, string $password): ?User
+    protected function validateBuyCrypto(BuyAndSellCryptoFormRequest $request): void
     {
-        $queryBuilder = Database::getConnection()->createQueryBuilder();
-        $user = $queryBuilder
-            ->select('*')
-            ->from('users')
-            ->where('email = ?')
-            ->setParameter(0, $email)->fetchAssociative();
-        if ($user) {
-            $validPassword = password_verify($password, $user['password']);
-            if ($validPassword) {
-                return new User(
-                    $user['id'],
-                    $user['name'],
-                    $user['email'],
-                    $user['password']
-                );
-            }
+        $user = $this->userRepository->getById($request->getUserId());
+        $coin = $this->cryptoRepository->getCoin($request->getCoinId());
+        $total = $coin->getPrice() * $request->getAmount();
+        if ($total > $user->getBalance()) {
+            $this->addError('buyError', 'You do not have enough money!');
         }
-        $this->addError('email', 'wrong email or password');
-        return null;
+    }
+
+    protected function validateSellCrypto(BuyAndSellCryptoFormRequest $request): void
+    {
+        $user = $this->userRepository->getById($request->getUserId());
+        $userCoin = $this->userCryptoRepository->get($user->getId(), $request->getCoinId());
+
+        if (!$userCoin || $request->getAmount() > $userCoin->getAmount()) {
+            $this->addError('sellError', 'Invalid request!');
+        }
+    }
+
+    protected function validateTransferCrypto(TransferCryptoFormRequest $request): void
+    {
+        $user = $this->userRepository->getById($request->getUserId());
+        $userCoin = $this->userCryptoRepository->get($user->getId(), $request->getCoinId());
+        $recipient = $this->userRepository->getById($request->getRecipientId());
+
+        if (!$recipient) {
+            $this->addError('recipient', 'Invalid recipient!');
+        }
+
+        if (!$userCoin || $request->getAmount() > $userCoin->getAmount()) {
+            $this->addError('amount', 'Invalid amount!');
+        }
     }
 
     private function addError(string $name, string $message): void
     {
         $_SESSION['errors'][$name] = $message;
+    }
+
+    public function validateOpenShortCryptoForm(ShortSellCryptoFormRequest $request):void
+    {
+
+    }
+
+    public function validateCloseShortCryptoForm(ShortSellCryptoFormRequest $request):void
+    {
+        $user = $this->userRepository->getById($request->getUserId());
+        $userCoin = $this->userCryptoRepository->get($user->getId(), $request->getCoinId());
+
+        if (!$userCoin || $request->getAmount() > $userCoin->getAmount()) {
+            $this->addError('shortError', 'Not enough coins!');
+        }
     }
 }

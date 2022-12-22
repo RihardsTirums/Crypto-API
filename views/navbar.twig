@@ -1,15 +1,43 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-success pe-5">
+<nav class="navbar navbar-expand-lg navbar-light pe-5" style="background-color: #051937">
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-        <div class="navbar-nav ms-auto">
-            <a class="nav-item nav-link active" href="/">Home</a>
+
+        <div class="navbar-nav">
             {% if auth.name %}
-                <a class="nav-item nav-link rounded-0" href="/dashboard">Dashboard</a>
-                <a class="nav-item nav-link rounded-0" href="/logout">Logout</a>
-                <label class="badge text-white fs-6 my-auto ms-3 rounded-0">{{ auth.name }}</label>
+                <div class="d-flex my-auto" style="margin-left: 50px">
+                    <div class="me-2">
+                        <form action="/deposit" method="post">
+                            <div class="text-center d-flex">
+                                <input type="number" placeholder="Amount" id="deposit" name="amount" class="form-control rounded-0" aria-describedby="buy">
+                                <button class="btn btn-warning rounded-0" type="submit">Deposit</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="me-2">
+                        <form action="/withdraw" method="post">
+                            <div class="text-center d-flex">
+                                <input placeholder="Amount" type="number" id="withdraw" name="amount"
+                                       class="form-control rounded-0 {{ errors.amount ? 'is-invalid' }}" aria-describedby="buy">
+                                <button class="btn btn-success rounded-0" type="submit">Withdraw</button>
+                            </div>
+                            {% if errors.amount %}
+                                <div class="text-danger">
+                                    {{ errors.amount }}
+                                </div>
+                            {% endif %}
+                        </form>
+                    </div>
+                </div>
+                <div class="badge fs-5 my-auto " style="margin-left: 467px">
+                    <label class="me-3">Hi, {{ auth.name }} Welcome!</label>
+                    <label class="fs-6 border border-info p-3 shadow">Balance: {{ auth.money|number_format(2) }} $</label>
+                </div>
+                <a class="nav-item nav-link my-auto text-warning" href="/dashboard">Dashboard</a>
+                <a class="nav-item nav-link my-auto text-warning" href="/logout">Logout</a>
             {% else %}
-                <a class="nav-item nav-link rounded-0" href="/register">Registration</a>
-                <a class="nav-item nav-link rounded-0" href="/login">Login</a>
+                <a class="nav-item nav-link text-warning" href="/register">Registration</a>
+                <a class="nav-item nav-link text-warning" href="/login">Login</a>
             {% endif %}
+            <a class="nav-item nav-link active my-auto text-warning" href="/">Home</a>
         </div>
     </div>
 </nav>

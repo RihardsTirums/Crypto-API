@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-class Coin
+class Crypto
 {
     private int $id;
     private string $name;
@@ -13,14 +13,17 @@ class Coin
     private float $percentChange1h;
     private float $percentChange7d;
 
-    public function __construct(int $id,
+    private float $marketCap;
+
+    public function __construct(int    $id,
                                 string $name,
                                 string $symbol,
                                 string $logo,
-                                float $price,
-                                float $percentChange1h,
-                                float $percentChange24h,
-                                float $percentChange7d)
+                                float  $price,
+                                float  $percentChange1h,
+                                float  $percentChange24h,
+                                float  $percentChange7d,
+                                float  $marketCap)
     {
         $this->id = $id;
         $this->name = $name;
@@ -30,6 +33,7 @@ class Coin
         $this->percentChange24h = $percentChange24h;
         $this->percentChange1h = $percentChange1h;
         $this->percentChange7d = $percentChange7d;
+        $this->marketCap = $marketCap;
     }
 
     public function getId(): int
@@ -70,5 +74,9 @@ class Coin
     public function getPercentChange7d(): float
     {
         return $this->percentChange7d;
+    }
+    public function getMarketCap(): float
+    {
+        return $this->marketCap;
     }
 }

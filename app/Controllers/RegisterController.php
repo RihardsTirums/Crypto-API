@@ -12,6 +12,15 @@ use App\Validation\Validation;
 
 class RegisterController
 {
+    private RegisterService $registerService;
+    private Validation $validation;
+
+    public function __construct(RegisterService $registerService, Validation $validation)
+    {
+        $this->registerService = $registerService;
+        $this->validation = $validation;
+    }
+
     public function showForm(): Template
     {
         return new Template('register.twig');
@@ -19,26 +28,27 @@ class RegisterController
 
     public function store(): Redirect
     {
-        $validation = new Validation();
-        $validation->validateRegistrationForm(new UserRegistrationFormRequest(
+        $this->validation->validateRegistrationForm(new UserRegistrationFormRequest(
             $_POST['name'],
             $_POST['email'],
             $_POST['password'],
             $_POST['passwordConfirm']
         ));
 
-        if (isset($_SESSION['errors']) && count($_SESSION['errors']) > 0) {
+        if ($this->validation->hasErrors()) {
             return new Redirect('/register');
         }
 
-        $registerService = new RegisterService();
-        $registerService->execute(new RegisterServiceRequest(
+        $user = $this->registerService->execute(new RegisterServiceRequest(
             $_POST['name'],
             $_POST['email'],
             $_POST['password']
         ));
 
-        Authentication::loginByEmail($_POST['email']);
+        if ($user) {
+            Authentication::loginById($user);
+            return new Redirect('/');
+        }
 
         return new Redirect('/');
     }
