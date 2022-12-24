@@ -17,7 +17,7 @@
 <li>I added a <code>schema.sql</code> file in the repository you need to import the table structure into the project.</li><br>
 <li>Enter your database credentials in the <code>.env</code> file: </li>
     <ol>
-        <ul>Fields <code>DB_NAME</code>, <code>USER</code>, <code>PASSWORD</code> **ARE REQUIRED**.</ul>
+        <ul>Fields <code>DB_NAME</code>, <code>USER</code>, <code>PASSWORD</code> ** ARE REQUIRED **.</ul>
         <ul>Field <code>HOST</code> is <code>localhost</code>.</ul>
         <ul>Field <code>Driver</code> is <code>pdo_mysql</code>.</ul><br>
     </ol>
