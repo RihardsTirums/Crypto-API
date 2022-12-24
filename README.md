@@ -21,7 +21,9 @@
 <li>Make a copy of the <code>.env.example</code> and rename it to <code>.env</code>.</li><br>
 <li>Register at https://coinmarketcap.com/api/ and get your API key. </li><br>
 <li>Enter your API key in the <code>.env</code> file.</li><br>
+<li>Create data base crypto-api</li><br>
 <li>I added a <code>schema.sql</code> file in the repository you need to import the table structure into the project.</li><br>
+    <li>Here are instructions on how to import <code>schema.sql</code> into your database https://www.jetbrains.com/help/phpstorm/import-data.html</li><br>
 <li>Enter your database credentials in the <code>.env</code> file: </li>
     <ol>
         <ul>Fields <code>DB_NAME</code>, <code>USER</code>, <code>PASSWORD</code> ARE REQUIRED.</ul>
