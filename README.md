@@ -7,6 +7,13 @@
 * Open and Close Short positions on your crypto.
 * Transfer your crypto to another user.
 * Receive crypto from another user.
+
+## Technologies used:
+<ol>
+<li>PHP 7.4</li>
+<li>MySQL 8.0.31</li>
+</ol>
+
 ## Instructions to run the website:
 <ol>
 <li>Clone this repository using the command:<br><code>git clone https://github.com/RihardsTirums/Crypto-API.git</code></li><br>
