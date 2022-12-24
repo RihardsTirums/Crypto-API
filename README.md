@@ -7,6 +7,13 @@
 * Open and Close Short positions on your crypto.
 * Transfer your crypto to another user.
 * Receive crypto from another user.
+
+## Technologies used:
+<ol>
+<li>PHP 7.4</li>
+<li>MySQL 8.0.31</li>
+</ol>
+
 ## Instructions to run the website:
 <ol>
 <li>Clone this repository using the command:<br><code>git clone https://github.com/RihardsTirums/Crypto-API.git</code></li><br>
@@ -14,10 +21,12 @@
 <li>Make a copy of the <code>.env.example</code> and rename it to <code>.env</code>.</li><br>
 <li>Register at https://coinmarketcap.com/api/ and get your API key. </li><br>
 <li>Enter your API key in the <code>.env</code> file.</li><br>
+<li>Create data base crypto-api</li><br>
 <li>I added a <code>schema.sql</code> file in the repository you need to import the table structure into the project.</li><br>
+    <li>Here are instructions on how to import <code>schema.sql</code> into your database https://www.jetbrains.com/help/phpstorm/import-data.html</li><br>
 <li>Enter your database credentials in the <code>.env</code> file: </li>
     <ol>
-        <ul>Fields <code>DB_NAME</code>, <code>USER</code>, <code>PASSWORD</code> **ARE REQUIRED**.</ul>
+        <ul>Fields <code>DB_NAME</code>, <code>USER</code>, <code>PASSWORD</code> ARE REQUIRED.</ul>
         <ul>Field <code>HOST</code> is <code>localhost</code>.</ul>
         <ul>Field <code>Driver</code> is <code>pdo_mysql</code>.</ul><br>
     </ol>
@@ -25,19 +34,24 @@
 </ol>
 
 ### This is home page where you can look up specific crypto:
-![MainClickOnCrypto.gif](..%2F..%2FVideos%2FMainClickOnCrypto.gif)
+![MainClickOnCrypto](https://user-images.githubusercontent.com/38011256/209435892-2d726f9c-59bb-4266-947b-e642761864fb.gif)
+
 
 ### Log in page where you can log in and see your portfolio:
-![LoginDashBoard.gif](..%2F..%2FVideos%2FLoginDashBoard.gif)
+![LoginDashBoard](https://user-images.githubusercontent.com/38011256/209435910-bf61ff74-fc57-4d62-94ec-c22323fe60ce.gif)
+
 
 ### Search bar where you can find specific crypto:
-![SearchCrypto.gif](..%2F..%2FVideos%2FSearchCrypto.gif)
+![SearchCrypto](https://user-images.githubusercontent.com/38011256/209435926-f8f23cfb-82b2-4e61-8472-6ff3221e0859.gif)
+
 
 ### Deposit or Withdraw funds:
-![AddFundsWithdrawFunds.gif](..%2F..%2FVideos%2FAddFundsWithdrawFunds.gif)
+![AddFundsWithdrawFunds](https://user-images.githubusercontent.com/38011256/209435947-7fe5e4bd-9660-4b3b-947a-9a8879b2fc46.gif)
+
 
 ### Selling Crypto to the market:
-![SellCrypto.gif](..%2F..%2FVideos%2FSellCrypto.gif)
+![SellCrypto](https://user-images.githubusercontent.com/38011256/209435954-e7bc6048-0cfd-4a7d-b97e-f99acc87f370.gif)
+
 
 ### Transfer Crypto to your friend:
-![SendCrypto.gif](..%2F..%2FVideos%2FSendCrypto.gif)
+![SendCrypto](https://user-images.githubusercontent.com/38011256/209435964-ce5a2426-0f59-4e6e-a931-3eb7de52115e.gif)
