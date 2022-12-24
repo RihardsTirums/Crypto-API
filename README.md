@@ -25,19 +25,24 @@
 </ol>
 
 ### This is home page where you can look up specific crypto:
-![MainClickOnCrypto.gif](..%2F..%2FVideos%2FMainClickOnCrypto.gif)
+![MainClickOnCrypto](https://user-images.githubusercontent.com/38011256/209435892-2d726f9c-59bb-4266-947b-e642761864fb.gif)
+
 
 ### Log in page where you can log in and see your portfolio:
-![LoginDashBoard.gif](..%2F..%2FVideos%2FLoginDashBoard.gif)
+![LoginDashBoard](https://user-images.githubusercontent.com/38011256/209435910-bf61ff74-fc57-4d62-94ec-c22323fe60ce.gif)
+
 
 ### Search bar where you can find specific crypto:
-![SearchCrypto.gif](..%2F..%2FVideos%2FSearchCrypto.gif)
+![SearchCrypto](https://user-images.githubusercontent.com/38011256/209435926-f8f23cfb-82b2-4e61-8472-6ff3221e0859.gif)
+
 
 ### Deposit or Withdraw funds:
-![AddFundsWithdrawFunds.gif](..%2F..%2FVideos%2FAddFundsWithdrawFunds.gif)
+![AddFundsWithdrawFunds](https://user-images.githubusercontent.com/38011256/209435947-7fe5e4bd-9660-4b3b-947a-9a8879b2fc46.gif)
+
 
 ### Selling Crypto to the market:
-![SellCrypto.gif](..%2F..%2FVideos%2FSellCrypto.gif)
+![SellCrypto](https://user-images.githubusercontent.com/38011256/209435954-e7bc6048-0cfd-4a7d-b97e-f99acc87f370.gif)
+
 
 ### Transfer Crypto to your friend:
-![SendCrypto.gif](..%2F..%2FVideos%2FSendCrypto.gif)
+![SendCrypto](https://user-images.githubusercontent.com/38011256/209435964-ce5a2426-0f59-4e6e-a931-3eb7de52115e.gif)
