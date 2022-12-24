@@ -42,7 +42,7 @@ class BuySellCryptoController
             (int)$vars['id'],
             (float)$_POST['amount'],
         ));
-        return new Redirect('/');
+        return new Redirect('/dashboard');
     }
 
     public function sellCrypto(array $vars): Redirect
@@ -62,6 +62,6 @@ class BuySellCryptoController
             (int)$vars['id'],
             (float)$_POST['amount'],
         ));
-        return new Redirect('/');
+        return new Redirect('/dashboard');
     }
 }

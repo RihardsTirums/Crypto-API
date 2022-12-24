@@ -31,7 +31,7 @@ class LoginController
 
         if ($user) {
             Authentication::loginById($user);
-            return new Redirect('/');
+            return new Redirect('/dashboard');
         }
 
         return new Redirect('/login');

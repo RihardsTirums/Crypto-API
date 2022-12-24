@@ -31,7 +31,7 @@
                     <label class="me-3">Hi, {{ auth.name }} Welcome!</label>
                     <label class="fs-6 border border-info p-3 shadow">Balance: {{ auth.money|number_format(2) }} $</label>
                 </div>
-                <a class="nav-item nav-link my-auto text-warning" href="/dashboard">Dashboard</a>
+                <a class="nav-item nav-link my-auto text-warning" href="/dashboard">Portfolio</a>
                 <a class="nav-item nav-link my-auto text-warning" href="/logout">Logout</a>
             {% else %}
                 <a class="nav-item nav-link text-warning" href="/register">Registration</a>
