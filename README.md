@@ -12,5 +12,5 @@
 <li>Clone this repository using the command:<br><code>git clone https://github.com/RihardsTirums/Crypto-API.git</code></li><br>
 <li>Install the required packages using the command:<br><code>composer install</code></li><br>
 <li>Make a copy of the <code>.env.example</code> and rename it to <code>.env</code></li><br>
-<li>Register at [CoinMarketCap](https://coinmarketcap.com/api/) and get your API key </li>
+<li>Register at https://coinmarketcap.com/api/ and get your API key </li>
 </ol>
