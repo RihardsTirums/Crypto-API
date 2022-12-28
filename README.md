@@ -12,6 +12,7 @@
 <ol>
 <li>PHP 7.4</li>
 <li>MySQL 8.0.31</li>
+<li>Composer 2.4</li>
 </ol>
 
 ## Instructions to run the website:
